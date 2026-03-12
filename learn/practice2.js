@@ -1,0 +1,7 @@
+//FUNCINOES
+
+//SON VARIOS 
+// DECLARATIVA, 
+// ANONIMA, 
+// ARROW FUNCTION  
+// Expression 
