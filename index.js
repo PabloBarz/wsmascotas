@@ -57,7 +57,7 @@ app.post('/mascotas', (req, res) => {
 })
 
 app.get('/mascotas', (req, res) => {
-  const sql = "SELECT * FROM mascotas LIMIT 10"
+  const sql = "SELECT * FROM mascotas"
   db.query(sql, (err, results) => {
     if (err) return res.status(500).send({mesagge: ' Error acceso a datos'})
     res.json(results)
