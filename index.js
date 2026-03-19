@@ -65,27 +65,27 @@ app.get('/mascotas', (req, res) => {
   //res.send({ 'proceso' : 'GET'})
 })
 
-app.put('/mascotas', (req, res) => {
+app.put('/mascotas/:id', (req, res) => {
   const { id } = req.params
   const { tipo, nombre, color, pesokg } = req.body
   //Podemos escribir multilineas usando " ` => ALT GR + } "
   //Comodines van en un índice
   const sql = `
-  UPDATE mascota SET 
-  tipo = ?, nombre = ?, color = ?, peso = ?, 
-  Where id = ?`
+  UPDATE mascotas SET 
+  tipo = ?, nombre = ?, color = ?, pesokg = ?
+  WHERE id = ?`;
 
   db.query(sql, [tipo, nombre, color, pesokg, id], (err, results) => {
     if (err) {
       res.status(500).send({
         success: false,
-        mesagge: 'No se concretó la actualización '
+        message: 'No se concretó la actualización '
       })
     }
 
     return res.send({
       success: true,
-      mesagge: 'Registro actualizado'
+      message: 'Registro actualizado'
     })
   })
 })
@@ -119,6 +119,33 @@ app.delete('/mascotas/:id', (req, res) => {
 
   })
 })
+
+app.get('/mascotas/:id', (req, res) => {
+  const { id } = req.params; 
+
+  const sql = "SELECT * FROM mascotas WHERE id = ?";
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      return res.status(500).send({
+        success: false,
+        message: 'Error al acceder a la base de datos'
+      });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).send({
+        success: false,
+        message: 'No se encontró la mascota'
+      });
+    }
+
+    return res.send({
+      success: true,
+      mascota: results[0]
+    });
+  });
+});
 
 
 app.listen(PORT, () => {
